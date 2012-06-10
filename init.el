@@ -75,10 +75,12 @@
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives
+	     '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
 (defvar my-packages 
- '(magit zenburn-theme)
+ '(magit zenburn-theme helm helm-git python-mode)
  "Libraries that should be installed by default")
 
 (defun install-my-packages ()
@@ -96,9 +98,10 @@
 On Windows, which doesn't have network-interface-list, assume we're online."
   (if (and (functionp 'network-interface-list)
            (network-interface-list))
-      (some (lambda (iface) (unless (equal "lo" (car iface))
-                              (member 'up (first (last (network-interface-info
-                                                        (car iface)))))))
+      (some (lambda (iface) 
+	      (unless (equal "lo" (car iface))
+		(member 'up (first (last (network-interface-info
+					  (car iface)))))))
             (network-interface-list))
       t))
 
@@ -115,3 +118,17 @@ On Windows, which doesn't have network-interface-list, assume we're online."
 ;; Move the custom file
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
+
+;; Make the buffer names unique
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'reverse)
+(setq uniquify-separator "/")
+(setq uniquify-after-kill-buffer-p t) ; rename after killing uniquified
+(setq uniquify-ignore-buffers-re "^\\*") ; don't muck with special buffers
+
+;; Setup helm (Quicksilver)
+(require 'helm-config)
+(require 'helm-git)
+(helm-mode 1)
+
+;; Setup python
