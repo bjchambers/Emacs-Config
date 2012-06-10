@@ -12,7 +12,7 @@
 ;; Setup some nice fonts
 (if (string-match "apple-darwin" system-configuration)
     (set-face-font 'default "Monaco-13")
-  (set-face-font 'default "Monospace-10"))
+  (set-face-font 'default "Bitstream Vera Sans Mono-10"))
 
 (global-hl-line-mode) ; highlight current line
 (global-linum-mode 1) ; add line numbers on the left
@@ -54,8 +54,8 @@
 ;; default key to switch buffer is C-x b, but that's not easy enough
 ;;
 ;; When you do this, to kill emacs either close its frame from the window
-;; manager, or do M-x kill-emacs.  Don't need a nice shortcut for an irregular
-;; action
+;; manager, or do M-x kill-emacs.  Don't need a nice shortcut for an 
+;; irregular action
 (global-set-key (kbd "C-x C-b") 'ido-switch-buffer)
 (global-set-key (kbd "C-x C-c") 'ido-switch-buffer)
 (global-set-key (kbd "C-x B") 'ibuffer)
