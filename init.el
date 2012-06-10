@@ -20,8 +20,6 @@
 ;; avoid compiz manager rendering bugs
 (add-to-list 'default-frame-alist '(alpha . 100))
 
-(cua-mode)
-
 ;; under mac, have Command as Meta and keep Option for localized input
 (when (string-match "apple-darwin" system-configuration)
   (setq mac-allow-anti-aliasing t)
@@ -80,7 +78,7 @@
 (package-initialize)
 
 (defvar my-packages 
- '(magit color-theme-solarized)
+ '(magit zenburn-theme)
  "Libraries that should be installed by default")
 
 (defun install-my-packages ()
@@ -109,7 +107,11 @@ On Windows, which doesn't have network-interface-list, assume we're online."
   (install-my-packages))
 
 ;; Setup some nicer fonts/themes
-(load-theme 'solarized-dark t)
+(load-theme 'zenburn t)
 
 ;; Setup magit now that its loaded
 (global-set-key (kbd "C-x C-z") 'magit-status)
+
+;; Move the custom file
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
