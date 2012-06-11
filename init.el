@@ -14,6 +14,10 @@
     (set-face-font 'default "Monaco-13")
   (set-face-font 'default "Bitstream Vera Sans Mono-10"))
 
+;; Make the window big enough for line numbers + info on either side
+(if window-system
+    (set-frame-size (selected-frame) 172 40))
+
 (global-hl-line-mode) ; highlight current line
 (global-linum-mode 1) ; add line numbers on the left
 
@@ -81,7 +85,8 @@
 
 (require 'ipython)
 (defvar my-packages 
- '(magit zenburn-theme python-mode flymake-cursor virtualenv)
+  (list 'magit 'zenburn-theme 'python-mode 'flymake-cursor 'virtualenv 
+	'flymake-jshint 'js2-mode 'fill-column-indicator)
  "Libraries that should be installed by default")
 
 (defun install-my-packages ()
@@ -147,4 +152,14 @@ On Windows, which doesn't have network-interface-list, assume we're online."
 (defun turn-on-flymake ()
   (flymake-mode t))
 
+(setq fci-rule-column 80)
+(defun turn-on-fill-column ()
+  (fci-mode))
+
 (add-hook 'python-mode-hook 'turn-on-flymake)
+(add-hook 'python-mode-hook 'turn-on-fill-column)
+(add-hook 'js2-mode-hook 'turn-on-flymake)
+(add-hook 'js2-mode-hook 'turn-on-fill-column)
+
+;;No flashing cursor
+(blink-cursor-mode (- (*) (*) (*)))
