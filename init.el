@@ -79,8 +79,9 @@
 	     '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
+(require 'ipython)
 (defvar my-packages 
- '(magit zenburn-theme helm helm-git python-mode)
+ '(magit zenburn-theme python-mode flymake-cursor virtualenv)
  "Libraries that should be installed by default")
 
 (defun install-my-packages ()
@@ -126,9 +127,24 @@ On Windows, which doesn't have network-interface-list, assume we're online."
 (setq uniquify-after-kill-buffer-p t) ; rename after killing uniquified
 (setq uniquify-ignore-buffers-re "^\\*") ; don't muck with special buffers
 
-;; Setup helm (Quicksilver)
-(require 'helm-config)
-(require 'helm-git)
-(helm-mode 1)
+;; Setup flymake
+(require 'flymake)
+(require 'flymake-cursor)
 
-;; Setup python
+(global-set-key (kbd "M-p") 'flymake-goto-prev-error)
+(global-set-key (kbd "M-n") 'flymake-goto-next-error)
+
+(defun flymake-pylint-init ()
+  (let* ((temp-file (flymake-init-create-temp-buffer-copy
+		     'flymake-create-temp-inplace))
+	 (local-file (file-relative-name
+		      temp-file
+		      (file-name-directory buffer-file-name))))
+      (list "epylint" (list local-file))))
+(add-to-list 'flymake-allowed-file-name-masks
+	     '("\\.py\\'" flymake-pylint-init))
+
+(defun turn-on-flymake ()
+  (flymake-mode t))
+
+(add-hook 'python-mode-hook 'turn-on-flymake)
