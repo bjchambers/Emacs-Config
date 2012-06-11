@@ -85,7 +85,7 @@
 
 (require 'ipython)
 (defvar my-packages 
-  (list 'magit 'zenburn-theme 'python-mode 'flymake-cursor 'virtualenv 
+  (list 'magit 'solarized-theme 'python-mode 'flymake-cursor 'virtualenv 
 	'flymake-jshint 'js2-mode 'fill-column-indicator)
  "Libraries that should be installed by default")
 
@@ -116,7 +116,16 @@ On Windows, which doesn't have network-interface-list, assume we're online."
   (install-my-packages))
 
 ;; Setup some nicer fonts/themes
-(load-theme 'zenburn t)
+(setq preferred-themes '(solarized-light solarized-dark))
+(load-theme (car preferred-themes) t)
+
+;; Setup a function to rotate among my preferred themes
+(defun next-theme ()
+  (interactive)
+  (setq preferred-themes (append (cdr preferred-themes) 
+                                 (list (car preferred-themes))))
+  (load-theme (car preferred-themes) t))
+(global-set-key [f12] 'next-theme)
 
 ;; Setup magit now that its loaded
 (global-set-key (kbd "C-x C-z") 'magit-status)
