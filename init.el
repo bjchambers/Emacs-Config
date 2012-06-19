@@ -83,7 +83,6 @@
 	     '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
-(require 'ipython)
 (defvar my-packages 
   (list 'magit 'solarized-theme 'python-mode 'flymake-cursor 'virtualenv 
 	'flymake-jshint 'js2-mode 'fill-column-indicator)
@@ -120,12 +119,12 @@ On Windows, which doesn't have network-interface-list, assume we're online."
 (load-theme (car preferred-themes) t)
 
 ;; Setup a function to rotate among my preferred themes
-(defun next-theme ()
+(defun toggle-theme ()
   (interactive)
   (setq preferred-themes (append (cdr preferred-themes) 
                                  (list (car preferred-themes))))
   (load-theme (car preferred-themes) t))
-(global-set-key [f12] 'next-theme)
+(global-set-key [f12] 'toggle-theme)
 
 ;; Setup magit now that its loaded
 (global-set-key (kbd "C-x C-z") 'magit-status)
