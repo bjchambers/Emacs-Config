@@ -83,6 +83,11 @@
 	     '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
+;; Set a sane path (based on the shell path) on OS X
+(when (equal system-type 'darwin)
+  (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
+  (push "/usr/local/bin" exec-path))
+
 (defvar my-packages 
   (list 'magit 'solarized-theme 'python-mode 'flymake-cursor 'virtualenv 
 	'flymake-jshint 'js2-mode 'fill-column-indicator)
@@ -171,3 +176,19 @@ On Windows, which doesn't have network-interface-list, assume we're online."
 
 ;;No flashing cursor
 (blink-cursor-mode (- (*) (*) (*)))
+
+(defun flymake-gjslint-init ()
+    "Initialize flymake for gjslint"
+    (let* ((temp-file (flymake-init-create-temp-buffer-copy
+		       'flymake-create-temp-inplace)))
+      (list "gjslint" (list temp-file "--strict" "--nosummary"))))
+
+(add-to-list 'flymake-allowed-file-name-masks
+	     '(".+\\.js$"
+	       flymake-gjslint-init
+	       flymake-simple-cleanup
+	       flymake-get-real-file-name))
+
+(add-to-list 'flymake-err-line-patterns
+	     '("^Line \\([[:digit:]]+\\), E:[[:digit:]]+: "
+	       nil 1 nil))
