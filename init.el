@@ -11,7 +11,7 @@
 
 ;; Setup some nice fonts
 (if (string-match "apple-darwin" system-configuration)
-    (set-face-font 'default "Monaco-13")
+    (set-face-font 'default "Inconsolata-12")
   (set-face-font 'default "Bitstream Vera Sans Mono-10"))
 
 ;; Make the window big enough for line numbers + info on either side
@@ -90,7 +90,8 @@
 
 (defvar my-packages 
   (list 'magit 'solarized-theme 'python-mode 'flymake-cursor 'virtualenv 
-	'flymake-jshint 'js2-mode 'fill-column-indicator)
+	'flymake-jshint 'js2-mode 'fill-column-indicator
+        'haskell-mode)
  "Libraries that should be installed by default")
 
 (defun install-my-packages ()
