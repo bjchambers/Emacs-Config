@@ -175,7 +175,7 @@ On Windows, which doesn't have network-interface-list, assume we're online."
 (add-hook 'js2-mode-hook 'turn-on-flymake)
 (add-hook 'js2-mode-hook 'turn-on-fill-column)
 
-;;No flashing cursor
+;; No flashing cursor
 (blink-cursor-mode (- (*) (*) (*)))
 
 (defun flymake-gjslint-init ()
@@ -193,3 +193,17 @@ On Windows, which doesn't have network-interface-list, assume we're online."
 (add-to-list 'flymake-err-line-patterns
 	     '("^Line \\([[:digit:]]+\\), E:[[:digit:]]+: "
 	       nil 1 nil))
+
+;; Configure Haskell mode:
+(add-to-list 'auto-mode-alist '("\.x$" . haskell-mode))
+(add-to-list 'auto-mode-alist '("\.y$" . haskell-mode))
+
+;; We want to use haskell-mode for Alex files too, but we don't want the
+;; fancy indenter
+(defun preferred-haskell-indent ()
+  (if (or (string-match "\.x$" (buffer-file-name)) 
+	  (string-match "\.y$" (buffer-file-name)))
+    (turn-on-haskell-simple-indent)
+    (turn-on-haskell-indentation)))
+
+(add-hook 'haskell-mode-hook 'preferred-haskell-indent)
