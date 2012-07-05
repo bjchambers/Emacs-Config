@@ -207,3 +207,58 @@ On Windows, which doesn't have network-interface-list, assume we're online."
     (turn-on-haskell-indentation)))
 
 (add-hook 'haskell-mode-hook 'preferred-haskell-indent)
+(add-hook 'haskell-mode-hook 'haskell-hook)
+(add-hook 'haskell-cabal-mode-hook 'haskell-cabal-hook)
+
+(defun haskell-hook ()
+  ;; Load the current file (and make a session if not already made)
+  (define-key haskell-mode-map [?\C-c ?\C-l] 'haskell-process-load-file)
+
+  ;; Switch to the REPL.
+  (define-key haskell-mode-map [?\C-c ?\C-z] 'haskell-interactive-switch)
+
+  ;; Build the cabal project.
+  (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
+
+  ;; Interactively choose the Cabal command to run.
+  (define-key haskell-mode-map (kbd "C-c cc") 'haskell-process-cabal)
+
+  ;; Get the type and info of the symbol at the point, print it in the message
+  ;; buffer.
+  (define-key haskell-mode-map  (kbd "C-c C-t") 'haskell-process-do-type)
+  (define-key haskell-mode-map  (kbd "C-c C-i") 'haskell-process-do-info)
+
+  ;; Contextually do clever things on the space key, in particular:
+  ;;   1. Complete imports, letting you choose the module name
+  ;;   2. Show the type of the symbol after the space.
+  (define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)
+
+  ;; Jump to the imports.  Keep tapping to jump between import groups.
+  ;; C-u f8 to jump back again.
+  (define-key haskell-mode-map [f8] 'haskell-navigate-imports)
+
+  ;; Jump to the definition of the current symbol.
+  (define-key haskell-mode-map (kbd "M-.") 'haskel-mode-tag-find)
+
+  ;; Save the current buffer and execute any special save actions.
+  (define-key haskell-mode-map (kbd "C-x C-s") 'haskell-mode-save-buffer)
+
+  ;; Indent the below lines on columns after the current column.
+  (define-key haskell-mode-map (kbd "C-<right>")
+    (lambda ()
+      (interactive)
+      (haskell-move-nested 1)))
+  ;; Same as above, but backwards
+  (define-key haskell-mode-map (kbd "C-<left>")
+    (lambda ()
+      (interactive)
+      (haskell-move-nested -1))))
+
+;; Useful to have these keybindings for .cabal files, too
+(defun haskell-cabal-hook ()
+  (define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
+  (define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-process-cabal)
+  (define-key haskell-cabal-mode-map (kbd "C-c C-z") 'haskell-interactive-switch))
+
+;; Ignore compiled Haskell files in filename completions
+(add-to-list 'completion-ignored-extensions ".hi")
