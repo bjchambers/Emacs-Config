@@ -90,8 +90,8 @@
 
 (defvar my-packages 
   (list 'magit 'solarized-theme 'python-mode 'flymake-cursor 'virtualenv 
-	'flymake-jshint 'js2-mode 'fill-column-indicator
-        'haskell-mode)
+	'flymake-jshint 'js2-mode 'fill-column-indicator 'haskell-mode
+	'markdown-mode 'scala-mode)
  "Libraries that should be installed by default")
 
 (defun install-my-packages ()
@@ -262,3 +262,9 @@ On Windows, which doesn't have network-interface-list, assume we're online."
 
 ;; Ignore compiled Haskell files in filename completions
 (add-to-list 'completion-ignored-extensions ".hi")
+
+;; Markdown Mode
+(require 'markdown-mode)
+
+;; Scala Mode
+(require 'scala-mode-auto)
