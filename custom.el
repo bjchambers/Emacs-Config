@@ -6,7 +6,8 @@
  '(haskell-font-lock-haddock nil)
  '(haskell-hoogle-command "hoogle")
  '(haskell-stylish-on-save t)
- '(haskell-tags-on-save t))
+ '(haskell-tags-on-save t)
+ '(scala-mode-feature:electric-on-per-default t))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
