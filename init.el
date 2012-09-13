@@ -264,7 +264,10 @@ On Windows, which doesn't have network-interface-list, assume we're online."
 (add-to-list 'completion-ignored-extensions ".hi")
 
 ;; Markdown Mode
-(require 'markdown-mode)
+(autoload 'markdown-mode "markdown-mode.el"
+  "Major mode for editing Markdown files." t)
+(add-to-list 'auto-mode-alist '("\\.markdown" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md" . markdown-mode))
 
 ;; Scala Mode
 (require 'scala-mode-auto)
