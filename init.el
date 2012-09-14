@@ -121,7 +121,7 @@ On Windows, which doesn't have network-interface-list, assume we're online."
   (install-my-packages))
 
 ;; Setup some nicer fonts/themes
-(setq preferred-themes '(solarized-light solarized-dark))
+(setq preferred-themes '(solarized-dark solarized-light))
 (load-theme (car preferred-themes) t)
 
 ;; Setup a function to rotate among my preferred themes
