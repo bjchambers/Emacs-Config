@@ -11,7 +11,7 @@
 
 ;; Setup some nice fonts
 (if (string-match "apple-darwin" system-configuration)
-    (set-face-font 'default "Inconsolata-12")
+    (set-face-font 'default "SourceCodePro-Regular")
   (set-face-font 'default "Bitstream Vera Sans Mono-10"))
 
 ;; Make the window big enough for line numbers + info on either side
@@ -83,10 +83,10 @@
 	     '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
-;; Set a sane path (based on the shell path) on OS X
-(when (equal system-type 'darwin)
-  (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
-  (push "/usr/local/bin" exec-path))
+;; Set a sane path (based on the ZSH rc path)
+(if (not (getenv "TERM_PROGRAM"))
+  (setenv "PATH" (shell-command-to-string "source $HOME/.zshrc && printf $PATH"))
+  (setq exec-path (split-string path ":")))
 
 (defvar my-packages 
   (list 'magit 'solarized-theme 'python-mode 'flymake-cursor 'virtualenv 
@@ -271,3 +271,5 @@ On Windows, which doesn't have network-interface-list, assume we're online."
 
 ;; Scala Mode
 (require 'scala-mode-auto)
+
+(setq-default indent-tabs-mode nil)
