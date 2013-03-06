@@ -85,13 +85,14 @@
 
 ;; Set a sane path (based on the ZSH rc path)
 (if (not (getenv "TERM_PROGRAM"))
-  (setenv "PATH" (shell-command-to-string "source $HOME/.zshrc && printf $PATH"))
-  (setq exec-path (split-string path ":")))
+  (let ((path (shell-command-to-string "source $HOME/.zshrc && printf $PATH")))
+    (setenv "PATH" path)
+    (setq exec-path (split-string path ":"))))
 
 (defvar my-packages 
   (list 'magit 'solarized-theme 'python-mode 'flymake-cursor 'virtualenv 
 	'flymake-jshint 'js2-mode 'fill-column-indicator 'haskell-mode
-	'markdown-mode 'scala-mode)
+	'markdown-mode 'scala-mode 'go-mode 'flymake-go)
  "Libraries that should be installed by default")
 
 (defun install-my-packages ()
@@ -239,9 +240,6 @@ On Windows, which doesn't have network-interface-list, assume we're online."
 
   ;; Jump to the definition of the current symbol.
   (define-key haskell-mode-map (kbd "M-.") 'haskel-mode-tag-find)
-
-  ;; Save the current buffer and execute any special save actions.
-  (define-key haskell-mode-map (kbd "C-x C-s") 'haskell-mode-save-buffer)
 
   ;; Indent the below lines on columns after the current column.
   (define-key haskell-mode-map (kbd "C-<right>")
